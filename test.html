@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>動画と効果音の再生</title>
+  <style>
+    body {
+      text-align: center;
+      background-color: #f9f9f9;
+      font-family: sans-serif;
+    }
+    #playButton {
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    video {
+      width: 80%;
+      max-width: 600px;
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>動画と効果音を再生</h1>
+  <button id="playButton">再生する</button>
+
+  <!-- コントロールなしの動画 -->
+  <video id="animeVideo" preload="auto">
+    <source src="anime.mp4" type="video/mp4">
+    お使いのブラウザは video タグをサポートしていません。
+  </video>
+
+  <!-- 効果音 -->
+  <audio id="soundEffect" preload="auto">
+    <source src="effect.mp3" type="audio/mpeg">
+    お使いのブラウザは audio タグをサポートしていません。
+  </audio>
+
+  <script>
+    const playButton = document.getElementById('playButton');
+    const animeVideo = document.getElementById('animeVideo');
+    const soundEffect = document.getElementById('soundEffect');
+
+    playButton.addEventListener('click', () => {
+      animeVideo.style.display = 'block';
+
+      // 最初から再生
+      animeVideo.currentTime = 0;
+      soundEffect.currentTime = 0;
+
+      animeVideo.play();
+      soundEffect.play();
+    });
+  </script>
+
+</body>
+</html>
