@@ -2,62 +2,67 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>動画と効果音の再生</title>
+  <title>動画の再生とクリック回数</title>
   <style>
     body {
       text-align: center;
       background-color: #f9f9f9;
       font-family: sans-serif;
     }
-    #playButton {
-      padding: 12px 24px;
-      font-size: 18px;
-      background-color: #ff5722;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
     video {
       width: 80%;
       max-width: 600px;
       margin-top: 20px;
-      display: none;
+      cursor: pointer; 
+    }
+    #countDisplay {
+      margin-top: 10px;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
     }
   </style>
 </head>
 <body>
 
-  <h1>動画と効果音を再生</h1>
-  <button id="playButton">再生する</button>
-
-  <!-- コントロールなしの動画 -->
+  <h1>動画の再生とクリック回数</h1>
+  
   <video id="animeVideo" preload="auto">
     <source src="anime.mp4" type="video/mp4">
     お使いのブラウザは video タグをサポートしていません。
   </video>
-
-  <!-- 効果音 -->
-  <audio id="soundEffect" preload="auto">
-    <source src="effect.mp3" type="audio/mpeg">
-    お使いのブラウザは audio タグをサポートしていません。
-  </audio>
+  
+  <p id="countDisplay"></p>
 
   <script>
-    const playButton = document.getElementById('playButton');
     const animeVideo = document.getElementById('animeVideo');
-    const soundEffect = document.getElementById('soundEffect');
+    const countDisplay = document.getElementById('countDisplay');
 
-    playButton.addEventListener('click', () => {
-      animeVideo.style.display = 'block';
+    // ローカルストレージから保存されたカウントを読み込む
+    // 初めてアクセスする場合は0に設定
+    let clickCount = parseInt(localStorage.getItem('videoClickCount')) || 0;
+    countDisplay.textContent = `クリック回数: ${clickCount}回`;
 
-      // 最初から再生
+    // 動画をクリックしたときの処理
+    animeVideo.addEventListener('click', () => {
+      // 再生位置を0に戻し、再生を開始
       animeVideo.currentTime = 0;
-      soundEffect.currentTime = 0;
-
       animeVideo.play();
-      soundEffect.play();
+      
+      // クリックカウントを1増やす
+      clickCount++;
+      
+      // 新しいカウントをローカルストレージに保存
+      localStorage.setItem('videoClickCount', clickCount);
+      
+      // 画面にカウントを表示
+      countDisplay.textContent = `クリック回数: ${clickCount}回`;
+    });
+
+    // 動画の再生が終了したときの処理
+    animeVideo.addEventListener('ended', () => {
+      animeVideo.currentTime = 0;
+      animeVideo.pause();
     });
   </script>
 
